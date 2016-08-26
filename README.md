@@ -4,44 +4,42 @@ url - https://challenge-demichuang.c9users.io/API/Api.php?參數=值
 ex: https://challenge-demichuang.c9users.io/API/Api.php?action=addUser&username=jj
 
 
-1.新增帳號
+###1.新增帳號
 
-api名稱 - addUser
+參數:
+action = addUser
+username = (帳號)
 
-參數1 - username(帳號)
+*帳號不能重複
 
+###2.取得餘額
 
-2.取得餘額
+參數:
+action = getBalance
+username = (帳號)
 
-api名稱 - getBalance
+###3.轉帳(轉進)
 
-參數1 - username(帳號)
+參數:
+action = in
+username = (帳號)
+money = (轉帳金額)
+transid = (轉帳序號)
 
+*轉帳序號不能重複
 
-3.轉帳(轉進)
+###4.轉帳(轉出)
 
-api名稱 - in
+參數:
+action = out
+username = (帳號)
+money = (轉帳金額)
+transid = (轉帳序號)
 
-參數1 - username(帳號)
+*轉帳序號不能重複
 
-參數2 - money(轉帳金額)
+###5.檢查轉帳狀態
 
-參數3 - transid(轉帳序號)
-
-
-4.轉帳(轉出)
-
-api名稱 - out
-
-參數1 - username(帳號)
-
-參數2 - money(轉帳金額)
-
-參數3 - transid(轉帳序號)
-
-
-5.檢查轉帳狀態
-
-api名稱 - getStatus
-
-參數1 - transid(轉帳序號)
+參數:
+action = getStatus
+transid = (轉帳序號)
