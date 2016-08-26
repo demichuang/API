@@ -61,7 +61,7 @@ class Api extends Connect
         if ($rowNum != 1) {
             $stmt = $this->db->prepare("UPDATE `user` SET `balance` = `balance`+ $money WHERE `username` = '$name'");
             $stmt->execute();
-            $stmt = $this->db->prepare("INSERT `record`(`username`, `transid`, `transfer`) VALUES ('$name', '$transid','input:$money')");
+            $stmt = $this->db->prepare("INSERT `record`(`username`, `transid`, `transfer`) VALUES ('$name', '$transid', 'input:$money')");
             $stmt->execute();
 
             $tempArray = array("result" => true, "data" => ["action" => "in", "username" => $name, "transid" => $transid, "money" => $money]);
@@ -88,7 +88,7 @@ class Api extends Connect
             if ($balance >= $money) {
                 $stmt = $this->db->prepare("UPDATE `user` SET `balance` = `balance`- $money WHERE `username` = '$name'");
                 $stmt->execute();
-                $stmt = $this->db->prepare("INSERT `record`(`username`, `transid`, `transfer`) VALUES ('$name', '$transid','output:$money')");
+                $stmt = $this->db->prepare("INSERT `record`(`username`, `transid`, `transfer`) VALUES ('$name', '$transid', 'output:$money')");
                 $stmt->execute();
 
                 $tempArray = array("result" => true, "data" => ["action" => "out", "username" => $name, "transid" => $transid, "money" => $money]);
@@ -129,11 +129,6 @@ if (!isset($_GET["action"])) {
 }
 
 if (isset($_GET["action"])) {
-    // if ($_GET["action"] != "addUser" || $_GET["action"] != "getBalance" || $_GET["action"] != "in" || $_GET["action"] != "out" || $_GET["action"] != "getStatus") {
-    //     $tempArray = array("result" => false, "data" => ["action" => "", "Error" => "Action Enter false"]);
-    //     echo json_encode($tempArray);
-    // }
-
     if ($_GET["action"] == "addUser") {
         if (!isset($name)) {
             $tempArray = array("result" => false, "data" => ["action" => "addUser", "Error" => "You don't have name parameter."]);
@@ -163,7 +158,14 @@ if (isset($_GET["action"])) {
         }
 
         if (isset($name) && isset($money) && isset($transid)) {
-            $myApi->in($name, $money, $transid);
+            if ($money <= 0 || $money > 1000000) {
+                $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "money enter error"]);
+                echo json_encode($tempArray);
+            }
+
+            if ($money > 0 && $money <= 1000000) {
+                $myApi->out($name, $money, $transid);
+            }
         }
     }
 
@@ -174,7 +176,14 @@ if (isset($_GET["action"])) {
         }
 
         if (isset($name) && isset($money) && isset($transid)) {
-            $myApi->out($name, $money, $transid);
+            if ($money <= 0 || $money > 1000000) {
+                $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "money enter error"]);
+                echo json_encode($tempArray);
+            }
+
+            if ($money > 0 && $money <= 1000000) {
+                $myApi->out($name, $money, $transid);
+            }
         }
     }
 
