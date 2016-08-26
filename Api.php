@@ -49,6 +49,16 @@ class Api extends Connect
 
     function in($name, $money, $transid)
     {
+        $stmt = $this->db->prepare("SELECT `balance` FROM `user` WHERE `username` = '$name'");
+        $stmt->execute();
+        $rowNum = $stmt->rowCount();
+
+        if ($rowNum != 1) {
+            $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "No this user."]);
+            echo json_encode($tempArray);
+            exit;
+        }
+
         $stmt = $this->db->prepare("SELECT * FROM `record` WHERE `transid` = '$transid'");
         $stmt->execute();
         $rowNum = $stmt->rowCount();
@@ -59,6 +69,11 @@ class Api extends Connect
         }
 
         if ($rowNum != 1) {
+            if ($money <= 0 || $money > 1000000) {
+                $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "money enter error"]);
+                echo json_encode($tempArray);
+                exit;
+            }
             $stmt = $this->db->prepare("UPDATE `user` SET `balance` = `balance`+ $money WHERE `username` = '$name'");
             $stmt->execute();
             $stmt = $this->db->prepare("INSERT `record`(`username`, `transid`, `transfer`) VALUES ('$name', '$transid', 'input:$money')");
@@ -71,6 +86,16 @@ class Api extends Connect
 
     function out($name, $money, $transid)
     {
+        $stmt = $this->db->prepare("SELECT `balance` FROM `user` WHERE `username` = '$name'");
+        $stmt->execute();
+        $rowNum = $stmt->rowCount();
+
+        if ($rowNum != 1) {
+            $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "No this user."]);
+            echo json_encode($tempArray);
+            exit;
+        }
+
         $stmt = $this->db->prepare("SELECT * FROM `record` WHERE `transid` = '$transid'");
         $stmt->execute();
         $rowNum = $stmt->rowCount();
@@ -81,6 +106,12 @@ class Api extends Connect
         }
 
         if ($rowNum != 1) {
+            if ($money <= 0 || $money > 1000000) {
+                $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "money enter error"]);
+                echo json_encode($tempArray);
+                exit;
+            }
+
             $stmt = $this->db->prepare("SELECT `balance` FROM `user` WHERE `username` = '$name'");
             $stmt->execute();
             $balance = $stmt->fetchColumn();
@@ -158,14 +189,7 @@ if (isset($_GET["action"])) {
         }
 
         if (isset($name) && isset($money) && isset($transid)) {
-            if ($money <= 0 || $money > 1000000) {
-                $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "money enter error"]);
-                echo json_encode($tempArray);
-            }
-
-            if ($money > 0 && $money <= 1000000) {
-                $myApi->out($name, $money, $transid);
-            }
+            $myApi->in($name, $money, $transid);
         }
     }
 
@@ -176,14 +200,7 @@ if (isset($_GET["action"])) {
         }
 
         if (isset($name) && isset($money) && isset($transid)) {
-            if ($money <= 0 || $money > 1000000) {
-                $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "money enter error"]);
-                echo json_encode($tempArray);
-            }
-
-            if ($money > 0 && $money <= 1000000) {
-                $myApi->out($name, $money, $transid);
-            }
+            $myApi->out($name, $money, $transid);
         }
     }
 
