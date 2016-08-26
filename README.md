@@ -10,7 +10,7 @@ ex: https://challenge-demichuang.c9users.io/API/Api.php?action=addUser&username=
 
 action = addUser
 
-username = (帳號)
+username = (string)(帳號)
 
 *帳號不能重複
 
@@ -20,7 +20,7 @@ username = (帳號)
 
 action = getBalance
 
-username = (帳號)
+username = (string)(帳號)
 
 ###3.轉帳(轉進)
 
@@ -28,11 +28,11 @@ username = (帳號)
 
 action = in
 
-username = (帳號)
+username = (string)(帳號)
 
-money = (轉帳金額)
+money = (int)(轉帳金額)
 
-transid = (轉帳序號)
+transid = (int)(轉帳序號)
 
 *轉帳序號不能重複
 
@@ -42,11 +42,11 @@ transid = (轉帳序號)
 
 action = out
 
-username = (帳號)
+username = (string)s(帳號)
 
-money = (轉帳金額)
+money = (int)(轉帳金額)
 
-transid = (轉帳序號)
+transid = (int)(轉帳序號)
 
 *轉帳序號不能重複
 
@@ -56,4 +56,4 @@ transid = (轉帳序號)
 
 action = getStatus
 
-transid = (轉帳序號)
+transid = (int)(轉帳序號)
