@@ -36,7 +36,7 @@ class Api extends Connect
         $rowNum = $stmt->rowCount();
 
         if ($rowNum != 1) {
-            $tempArray = array("result" => false, "data" => ["action" => "addUser", "Error" => "No this user."]);
+            $tempArray = array("result" => false, "data" => ["action" => "getBalance", "Error" => "No this user."]);
             echo json_encode($tempArray);
         }
 
@@ -129,10 +129,10 @@ if (!isset($_GET["action"])) {
 }
 
 if (isset($_GET["action"])) {
-    if ($_GET["action"] != "addUser" || $_GET["action"] != "getBalance" || $_GET["action"] != "in" || $_GET["action"] != "out" || $_GET["action"] != "getStatus") {
-        $tempArray = array("result" => false, "data" => ["action" => "", "Error" => "Action Enter false"]);
-        echo json_encode($tempArray);
-    }
+    // if ($_GET["action"] != "addUser" || $_GET["action"] != "getBalance" || $_GET["action"] != "in" || $_GET["action"] != "out" || $_GET["action"] != "getStatus") {
+    //     $tempArray = array("result" => false, "data" => ["action" => "", "Error" => "Action Enter false"]);
+    //     echo json_encode($tempArray);
+    // }
 
     if ($_GET["action"] == "addUser") {
         if (!isset($name)) {
@@ -157,18 +157,8 @@ if (isset($_GET["action"])) {
     }
 
     if ($_GET["action"] == "in") {
-        if (!isset($name)) {
-            $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "You don't have name parameter."]);
-            echo json_encode($tempArray);
-        }
-
-        if (!isset($money)) {
-            $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "You don't have money parameter."]);
-            echo json_encode($tempArray);
-        }
-
-        if (!isset($transid)) {
-            $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "You don't have transid parameter."]);
+        if (!isset($name) || !isset($money) || !isset($transid)) {
+            $tempArray = array("result" => false, "data" => ["action" => "in", "Error" => "parameter missing"]);
             echo json_encode($tempArray);
         }
 
@@ -178,18 +168,8 @@ if (isset($_GET["action"])) {
     }
 
     if ($_GET["action"] == "out") {
-        if (!isset($name)) {
-            $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "You don't have name parameter."]);
-            echo json_encode($tempArray);
-        }
-
-        if (!isset($money)) {
-            $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "You don't have money parameter."]);
-            echo json_encode($tempArray);
-        }
-
-        if (!isset($transid)) {
-            $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "You don't have transid parameter."]);
+        if (!isset($name) || !isset($money) || !isset($transid)) {
+            $tempArray = array("result" => false, "data" => ["action" => "out", "Error" => "parameter missing"]);
             echo json_encode($tempArray);
         }
 
